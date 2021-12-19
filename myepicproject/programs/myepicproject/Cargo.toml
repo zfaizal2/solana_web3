@@ -1,12 +1,12 @@
 [package]
-name = "basic"
+name = "myepicproject"
 version = "0.1.0"
 description = "Created with Anchor"
 edition = "2018"
 
 [lib]
 crate-type = ["cdylib", "lib"]
-name = "basic"
+name = "myepicproject"
 
 [features]
 no-entrypoint = []
@@ -15,4 +15,4 @@ cpi = ["no-entrypoint"]
 default = []
 
 [dependencies]
-anchor-lang = "0.15.0"
+anchor-lang = "0.18.2"

@@ -7,7 +7,7 @@ const main = async() => {
   const provider = anchor.Provider.env();
   anchor.setProvider(provider);
 
-  const program = anchor.workspace.Basic;
+  const program = anchor.workspace.Myepicproject;
   const baseAccount = anchor.web3.Keypair.generate();
   let tx = await program.rpc.startStuffOff({
     accounts: {
@@ -21,21 +21,20 @@ const main = async() => {
 
   let account = await program.account.baseAccount.fetch(baseAccount.publicKey);
   console.log('👀 GIF Count', account.totalGifs.toString())
-
-  // You'll need to now pass a GIF link to the function! You'll also need to pass in the user submitting the GIF!
-  await program.rpc.addGif("insert_a_giphy_link_here", {
+	
+  // Call add_gif!
+  await program.rpc.addGif("https://media2.giphy.com/media/bHVtLr9BLun8Bkwhw7/giphy.gif?cid=ecf05e47e727cccefa5657e665acd81e2c2ef07b69416d7b&rid=giphy.gif&ct=g",{
     accounts: {
       baseAccount: baseAccount.publicKey,
       user: provider.wallet.publicKey,
     },
   });
   
-  // Call the account.
+  // Get the account again to see what changed.
   account = await program.account.baseAccount.fetch(baseAccount.publicKey);
   console.log('👀 GIF Count', account.totalGifs.toString())
 
-  // Access gif_list on the account!
-  console.log('👀 GIF List', account.gifList)
+  console.log('GIF List', account.gifList)
 }
 
 const runMain = async () => {

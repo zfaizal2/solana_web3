@@ -1,28 +1,27 @@
 use anchor_lang::prelude::*;
 
-declare_id!("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS");
+declare_id!("88WWs6iJsDQMysL3eAVzKpgPNwqtYyz6c9HNZmB53zB1");
 
 #[program]
-pub mod basic {
+pub mod myepicproject {
   use super::*;
   pub fn start_stuff_off(ctx: Context<StartStuffOff>) -> ProgramResult {
     let base_account = &mut ctx.accounts.base_account;
     base_account.total_gifs = 0;
     Ok(())
   }
-
-  // The function now accepts a gif_link param from the user. We also reference the user from the Context
+  
+	// Another function woo!
   pub fn add_gif(ctx: Context<AddGif>, gif_link: String) -> ProgramResult {
+    // Get a reference to the account and increment total_gifs.
     let base_account = &mut ctx.accounts.base_account;
     let user = &mut ctx.accounts.user;
 
-	// Build the struct.
     let item = ItemStruct {
       gif_link: gif_link.to_string(),
       user_address: *user.to_account_info().key,
     };
-		
-	// Add it to the gif_list vector.
+
     base_account.gif_list.push(item);
     base_account.total_gifs += 1;
     Ok(())
@@ -38,7 +37,8 @@ pub struct StartStuffOff<'info> {
   pub system_program: Program <'info, System>,
 }
 
-// Add the signer who calls the AddGif method to the struct so that we can save it
+// Specify what data you want in the AddGif Context.
+// Getting a handle on the flow of things :)?
 #[derive(Accounts)]
 pub struct AddGif<'info> {
   #[account(mut)]
@@ -47,16 +47,14 @@ pub struct AddGif<'info> {
   pub user: Signer<'info>,
 }
 
-// Create a custom struct for us to work with.
 #[derive(Debug, Clone, AnchorSerialize, AnchorDeserialize)]
 pub struct ItemStruct {
-    pub gif_link: String,
-    pub user_address: Pubkey,
+  pub gif_link: String,
+  pub user_address: Pubkey,
 }
 
 #[account]
 pub struct BaseAccount {
     pub total_gifs: u64,
-	// Attach a Vector of type ItemStruct to the account.
     pub gif_list: Vec<ItemStruct>,
 }
